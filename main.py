@@ -28,7 +28,6 @@ email_notification_interval = 180 # 3 minutes
 
 def send_email(sites, timestamp):
   print 'Sending email...'
-
   payload = {
     'secret'      : config.get('Email', 'secret'),
     'website_url' : reserve_url,
@@ -40,11 +39,6 @@ def send_email(sites, timestamp):
   print payload
   r = requests.post(config.get('Email', 'api_url'), payload)
   print r.text
-
-
-def prettify_time(timestamp):
-  
-  return datetime.fromtimestamp(timestamp).strftime(format)
 
 
 def get_avail(site_range_url):
@@ -106,7 +100,6 @@ def run():
 
 
 if __name__ == "__main__":
-
   while True:
     try:
       run()
