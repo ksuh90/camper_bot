@@ -1,2 +1,3 @@
 # camper_bot
-Checks and notify open camp spots in Hoffmaster park
+-Check and notify(via email) available camp spots in Hoffmaster park with given date.
+-No need to check manually anymore!
