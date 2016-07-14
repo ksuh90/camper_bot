@@ -8,6 +8,9 @@ import ConfigParser
 config = ConfigParser.ConfigParser()
 config.read('config.ini')
 
+# open driver
+driver = webdriver.Chrome(config.get('Webdriver', 'path'))
+
 # camp sites
 ALL_CAMP_SITES = ['1-132,C1-C2?Map', '133-293,B1-B2?Map']
 
@@ -48,8 +51,7 @@ def prettify_time(timestamp):
 
 
 def get_avail(site_range_url):
-  # initiate browser
-  driver = webdriver.Chrome(config.get('Webdriver', 'path'))
+  # access website
   driver.get(url+site_range_url)
 
   # config month element
@@ -78,7 +80,6 @@ def get_avail(site_range_url):
     if site_num.isdigit():
       out.append(site_num)
 
-  driver.close()
 
   return out
 
@@ -119,5 +120,6 @@ if __name__ == "__main__":
       run()
 
     except KeyboardInterrupt:
+      driver.close()
       print 'shutting down.'
       break
