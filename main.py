@@ -26,12 +26,15 @@ time_last_email_sent = False
 email_notification_interval = 180 # 3 minutes
 
 
+def prettify_time(timestamp):
+  return datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%S')
+
 def send_email(sites, timestamp):
   print 'Sending email...'
   payload = {
     'secret'      : config.get('Email', 'secret'),
     'website_url' : reserve_url,
-    'timestamp'   : datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%S'),
+    'timestamp'   : prettify_time(timestamp),
     'camp_sites'  : ', '.join(sites),
     'addresses'   : config.get('Email', 'addresses'),
   }
@@ -76,6 +79,7 @@ def get_avail(site_range_url):
 def run():
   cnt = 0
   avail = []
+  now = time.time()
   for s in all_camp_sites:
     avail += get_avail(s)
     time.sleep(3)
@@ -90,12 +94,12 @@ def run():
     print '\n\n%s site(s) AVAILABLE !!!!!!!!!'%(cnt)
 
     # only send email if it has been over n minutes
-    now = time.time()
+    
     global time_last_email_sent
     if not time_last_email_sent or (now - time_last_email_sent) >= email_notification_interval:
       time_last_email_sent = now
       send_email(avail, now)
-
+  print prettify_time(now)
   print '-----------------------------------------------\n\n'
 
 
